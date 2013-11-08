@@ -8,6 +8,10 @@ public class Message {
 	String time;
 	String payload;
 	
+	public Message() {
+		// Default constructor
+	}
+	
 	public Message(String from, String to, String payload) {
 		this.from = from;
 		this.to = to;

@@ -10,11 +10,7 @@ import java.net.MalformedURLException;
 
 public class REST_API {
 		
-	public REST_API() {
-		
-	}
-	
-	public int PUT(URL url, JSONObject obj) {
+	public static int PUT(URL url, JSONObject obj) {
 		
 		try {
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -26,7 +22,7 @@ public class REST_API {
 			os.write(obj.toString().getBytes());
 			os.flush();
 			
-			if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
+			if (conn.getResponseCode() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : "
 					+ conn.getResponseCode());
 			}	
@@ -51,14 +47,14 @@ public class REST_API {
 		return 0;
 	}
 	
-	public JSONObject GET(URL url) throws JSONException {
+	public static JSONObject GET(URL url) throws JSONException {
 		
 		String output = new String();
-		try {
+		try {			
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Accept", "application/json");
-	 
+			
 			if (conn.getResponseCode() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : "
 						+ conn.getResponseCode());
@@ -68,8 +64,10 @@ public class REST_API {
 				(conn.getInputStream())));
 	 
 			System.out.println("Output from Server .... \n");
-			while ((output = br.readLine()) != null) {
-				System.out.println(output);
+			String tmp = new String();
+			while ( (tmp = br.readLine()) != null) {
+				System.out.println(tmp);
+				output += tmp;
 			}
 			 
 			conn.disconnect();
@@ -85,7 +83,7 @@ public class REST_API {
 		return json;
 	}
 	
-	public int POST(URL url, JSONObject obj) {
+	public static int POST(URL url, JSONObject obj) {
 		try {
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setDoOutput(true);
@@ -121,7 +119,7 @@ public class REST_API {
 		return 0;
 	}
 	
-	public int DELETE(URL url, JSONObject obj) {
+	public static int DELETE(URL url, JSONObject obj) {
 		try {
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setDoOutput(true);
